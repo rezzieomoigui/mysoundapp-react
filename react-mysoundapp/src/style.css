@@ -1,0 +1,117 @@
+/* Global Y2K Theme */
+
+body {
+  background-color: #000000;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar links */
+nav {
+  background-color: #1a001f;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+}
+
+nav li {
+  display: inline;
+}
+
+nav a {
+  color: #d000ff;
+  text-decoration: none;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff006a;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #ff1e6e;
+}
+
+/* Headings */
+h1, h2, h3 {
+  color: #d000ff;
+  text-shadow: 0 0 10px #ff006a;
+}
+
+/* Paragraphs and descriptions */
+p {
+  color: #ff1e6e;
+}
+
+/* Container styling for each page */
+.page-container {
+  padding: 2rem;
+  min-height: 100vh;
+}
+.artist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  justify-items: center;
+}
+
+.artist-card {
+  background: linear-gradient(145deg, #1a001f, #330033);
+  border: 2px solid #d000ff;
+  border-radius: 20px;
+  color: #ff1e6e;
+  padding: 1rem;
+  text-align: center;
+  width: 100%;
+  max-width: 250px;
+  box-shadow: 0 0 20px #ff1e6e;
+  transition: transform 0.3s ease;
+}
+
+.artist-card:hover {
+  transform: scale(1.05);
+  background-color: #330033;
+  color: #fff;
+}
+
+.artist-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+}
+.genre-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.genre-card {
+  background: linear-gradient(145deg, #1a001f, #330033);
+  border: 2px solid #ff1e6e;
+  color: #d000ff;
+  padding: 1rem;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #ff1e6e;
+  transition: transform 0.3s ease;
+}
+
+.genre-card:hover {
+  transform: scale(1.05);
+  color: #fff;
+  background: #330033;
+}
+
+
