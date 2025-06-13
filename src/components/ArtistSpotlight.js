@@ -9,7 +9,7 @@ const ArtistSpotlight = () => {
 
       <div className="artist-grid">
         <div className="artist-card">
-          <img src="/images/pinkpantheress.jpg" alt="Artist 1" />
+          <img src="/public/pinkpantheress.jpg" alt="Artist 1" />
           <h3>PinkPantheress</h3>
           <p>Y2K vibes with a twist of garage and alt-pop.</p>
         </div>
