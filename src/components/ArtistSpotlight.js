@@ -1,5 +1,4 @@
 import React from "react";
-import myImage from "../assets/myimage.jpg"; // adjust path to your image
 
 const ArtistSpotlight = () => {
   return (
