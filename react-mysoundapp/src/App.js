@@ -13,7 +13,7 @@ import "./style.css"; // This must be in src/
 const App = () => {
   return (
      <BrowserRouter basename={process.env.PUBLIC_URL}>
-    <Router>
+    <Routes>
       <div className="app">
         <Navbar />
         <Routes>
@@ -24,7 +24,7 @@ const App = () => {
           <Route path="/My-playlist" element={<MyPlaylist />} />
         </Routes>
       </div>
-    </Router>
+    </Routes>
     </BrowserRouter>
   );
 }
