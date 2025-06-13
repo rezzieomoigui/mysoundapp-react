@@ -18,7 +18,7 @@ const ArtistSpotlight = () => {
           <p>Emo cloud rap meets futuristic aesthetic.</p>
         </div>
         <div className="artist-card">
-          <img src="https://i.scdn.co/image/ab6761610000e5ebb59f02f680d9c7808b38c4c4" alt="Artist 3" />
+          <img src="./imgs/rihanna.webp" alt="Artist 3" />
           <h3>070 Shake</h3>
           <p>Raw emotion layered over ambient hip-hop.</p>
         </div>
