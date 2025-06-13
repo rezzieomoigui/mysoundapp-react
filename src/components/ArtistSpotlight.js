@@ -13,8 +13,8 @@ const ArtistSpotlight = () => {
           <p>Y2K vibes with a twist of garage and alt-pop.</p>
         </div>
         <div className="artist-card">
-          <img src="https://i.scdn.co/image/ab6761610000e5eb061c4aa18c8d1f6e3cc6aa63" alt="Artist 2" />
-          <h3>Bladee</h3>
+          <img src="./imgs/liluzivert.jpg" alt="Artist 2" />
+          <h3>Lil Uzi Vert</h3>
           <p>Emo cloud rap meets futuristic aesthetic.</p>
         </div>
         <div className="artist-card">
