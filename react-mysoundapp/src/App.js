@@ -10,8 +10,9 @@ import MyPlaylist from "./components/MyPlaylist";
 import "./style.css"; // This must be in src/
 
 
-function App() {
+const App = () => {
   return (
+     <BrowserRouter basename={process.env.PUBLIC_URL}>
     <Router>
       <div className="app">
         <Navbar />
@@ -24,6 +25,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </BrowserRouter>
   );
 }
 export default App;
