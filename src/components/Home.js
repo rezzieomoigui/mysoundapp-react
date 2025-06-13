@@ -24,8 +24,8 @@ function Home() {
         <h2>Recommended Playlists</h2>
         <div className="playlist-cards">
           <div className="playlist-card">
-            <div className="playlist-image">[Image]</div>
-            <img src="https://i.scdn.co/image/ab6761610000e5ebc5c8384f113a8d6c5f0bce3f" alt="Artist 1" />
+            <div className="playlist-image">[Lana Del Rey]</div>
+            <img src="./images/lanacover.jpg" alt="Artist 1" />
             <p className="playlist-title">Soft Girl Moods</p>
           </div>
           <div className="playlist-card">
