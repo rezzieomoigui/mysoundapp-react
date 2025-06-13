@@ -25,7 +25,7 @@ function Home() {
         <div className="playlist-cards">
           <div className="playlist-card">
             <div className="playlist-image">[Lana Del Rey]</div>
-            <img src="./images/lanacover.jpg" alt="Artist 1" />
+            <img src="/images/lanacover.jpg" alt="Artist 1" />
             <p className="playlist-title">Soft Girl Moods</p>
           </div>
           <div className="playlist-card">
