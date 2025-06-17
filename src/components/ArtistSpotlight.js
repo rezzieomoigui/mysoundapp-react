@@ -19,8 +19,8 @@ const ArtistSpotlight = () => {
         </div>
         <div className="artist-card">
           <img src="./imgs/rihanna.webp" alt="Artist 3" />
-          <h3>070 Shake</h3>
-          <p>Raw emotion layered over ambient hip-hop.</p>
+          <h3>Rihanna</h3>
+          <p>Fun emotion drive dance pop. </p>
         </div>
       </div>
     </div>
