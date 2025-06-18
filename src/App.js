@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Discover from "./components/Discover";
@@ -10,17 +10,15 @@ import Layout from "./Layout";
 
 const App = () => {
   return (
-    <BrowserRouter> {/* basename removed here */}
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="Discover" element={<Discover />} />
-          <Route path="ArtistSpotlight" element={<ArtistSpotlight />} />
-          <Route path="Genres" element={<Genres />} />
-          <Route path="MyPlaylist" element={<MyPlaylist />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="Discover" element={<Discover />} />
+        <Route path="ArtistSpotlight" element={<ArtistSpotlight />} />
+        <Route path="Genres" element={<Genres />} />
+        <Route path="MyPlaylist" element={<MyPlaylist />} />
+      </Route>
+    </Routes>
   );
 }
 
