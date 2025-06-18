@@ -10,7 +10,8 @@ const MyPlaylist = () => {
     title: "",
     artist: "",
     album: "",
-    genre: ""
+    genre: "",
+    spotify_url: ""
   });
   const [successMsg, setSuccessMsg] = useState("");
 
@@ -27,6 +28,17 @@ const MyPlaylist = () => {
     setFormData({...formData, [e.target.name]: e.target.value});
   };
 
+  // Extract track ID from a Spotify URL
+  const getSpotifyEmbedId = (url) => {
+    try {
+      const parts = url.split("/track/");
+      if (parts.length < 2) return null;
+      return parts[1].split("?")[0];
+    } catch {
+      return null;
+    }
+  };
+
   // Submit new song
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,7 +51,14 @@ const MyPlaylist = () => {
     .then(res => res.json())
     .then(newSong => {
       setSongs([...songs, newSong]);
-      setFormData({ img_name: "", title: "", artist: "", album: "", genre: "" });
+      setFormData({
+        img_name: "",
+        title: "",
+        artist: "",
+        album: "",
+        genre: "",
+        spotify_url: ""
+      });
       setSuccessMsg("Song added!");
       setTimeout(() => setSuccessMsg(""), 2000);
     })
@@ -57,6 +76,7 @@ const MyPlaylist = () => {
         <input type="text" name="artist" placeholder="Artist" value={formData.artist} onChange={handleChange} required />
         <input type="text" name="album" placeholder="Album" value={formData.album} onChange={handleChange} />
         <input type="text" name="genre" placeholder="Genre" value={formData.genre} onChange={handleChange} />
+        <input type="text" name="spotify_url" placeholder="Spotify Track URL (optional)" value={formData.spotify_url} onChange={handleChange} />
         <button type="submit">Add Song</button>
         {successMsg && <p className="success">{successMsg}</p>}
       </form>
@@ -69,6 +89,19 @@ const MyPlaylist = () => {
             <h3>{song.title}</h3>
             <p>{song.artist} — <i>{song.album}</i></p>
             <span className="genre">{song.genre}</span>
+            {/* Spotify Embed (if link is provided) */}
+            {song.spotify_url && getSpotifyEmbedId(song.spotify_url) && (
+              <iframe
+                src={`https://open.spotify.com/embed/track/${getSpotifyEmbedId(song.spotify_url)}`}
+                width="100%"
+                height="80"
+                frameBorder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                title={`Spotify player for ${song.title}`}
+                style={{ marginTop: "10px", borderRadius: "12px" }}
+              ></iframe>
+            )}
           </div>
         ))}
       </div>
@@ -77,5 +110,6 @@ const MyPlaylist = () => {
 };
 
 export default MyPlaylist;
+
 
 
