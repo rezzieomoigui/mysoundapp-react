@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./MyPlaylist.css";
 
-const API_URL = "https://mysoundapp-server.onrender.com/api/playlists"; // replace with your server link
-
-const MyPlaylist = () => {
-  const [songs, setSongs] = useState([]);
+// Component now accepts props from App.js
+const MyPlaylist = ({
+  playlists,
+  onEdit,
+  onDelete,
+  onSave,
+  editingPlaylist,
+  message,
+  onCancel
+}) => {
   const [formData, setFormData] = useState({
     img_name: "",
     title: "",
@@ -13,22 +19,29 @@ const MyPlaylist = () => {
     genre: "",
     spotify_url: ""
   });
-  const [successMsg, setSuccessMsg] = useState("");
 
-  // Fetch songs from server
+  // Populate form when editingPlaylist changes
   useEffect(() => {
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => setSongs(data))
-      .catch(err => console.error("Fetch error:", err));
-  }, []);
+    if (editingPlaylist) {
+      setFormData(editingPlaylist);
+    } else {
+      setFormData({
+        img_name: "",
+        title: "",
+        artist: "",
+        album: "",
+        genre: "",
+        spotify_url: ""
+      });
+    }
+  }, [editingPlaylist]);
 
-  // Handle input change
+  // Handle form changes
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Extract track ID from a Spotify URL
+  // Extract Spotify track ID from a URL
   const getSpotifyEmbedId = (url) => {
     try {
       const parts = url.split("/track/");
@@ -39,57 +52,88 @@ const MyPlaylist = () => {
     }
   };
 
-  // Submit new song
+  // Handle form submit (Add or Edit)
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData)
-    })
-    .then(res => res.json())
-    .then(newSong => {
-      setSongs([...songs, newSong]);
-      setFormData({
-        img_name: "",
-        title: "",
-        artist: "",
-        album: "",
-        genre: "",
-        spotify_url: ""
-      });
-      setSuccessMsg("Song added!");
-      setTimeout(() => setSuccessMsg(""), 2000);
-    })
-    .catch(err => console.error("Add error:", err));
+    onSave(formData);
+    setFormData({
+      img_name: "",
+      title: "",
+      artist: "",
+      album: "",
+      genre: "",
+      spotify_url: ""
+    });
   };
 
   return (
     <div className="my-playlist">
       <h2>🎧 My Playlist</h2>
 
-      {/* Song Form */}
+      {/* Form */}
       <form onSubmit={handleSubmit} className="playlist-form">
-        <input type="text" name="img_name" placeholder="Image Name" value={formData.img_name} onChange={handleChange} required />
-        <input type="text" name="title" placeholder="Song Title" value={formData.title} onChange={handleChange} required />
-        <input type="text" name="artist" placeholder="Artist" value={formData.artist} onChange={handleChange} required />
-        <input type="text" name="album" placeholder="Album" value={formData.album} onChange={handleChange} />
-        <input type="text" name="genre" placeholder="Genre" value={formData.genre} onChange={handleChange} />
-        <input type="text" name="spotify_url" placeholder="Spotify Track URL (optional)" value={formData.spotify_url} onChange={handleChange} />
-        <button type="submit">Add Song</button>
-        {successMsg && <p className="success">{successMsg}</p>}
+        <input
+          type="text"
+          name="img_name"
+          placeholder="Image Name"
+          value={formData.img_name}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="title"
+          placeholder="Song Title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="artist"
+          placeholder="Artist"
+          value={formData.artist}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="album"
+          placeholder="Album"
+          value={formData.album}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="genre"
+          placeholder="Genre"
+          value={formData.genre}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="spotify_url"
+          placeholder="Spotify Track URL (optional)"
+          value={formData.spotify_url}
+          onChange={handleChange}
+        />
+        <div className="form-buttons">
+          <button type="submit">{editingPlaylist ? "Update" : "Add Song"}</button>
+          {editingPlaylist && <button type="button" onClick={onCancel}>Cancel</button>}
+        </div>
+        {message && <p className="success">{message}</p>}
       </form>
 
-      {/* Song List */}
+      {/* Playlist Songs */}
       <div className="playlist-songs">
-        {songs.map(song => (
+        {playlists.map((song) => (
           <div key={song._id} className="song-card">
             <img src={song.img_name} alt={song.title} />
             <h3>{song.title}</h3>
             <p>{song.artist} — <i>{song.album}</i></p>
             <span className="genre">{song.genre}</span>
-            {/* Spotify Embed (if link is provided) */}
+
+            {/* Spotify Player */}
             {song.spotify_url && getSpotifyEmbedId(song.spotify_url) && (
               <iframe
                 src={`https://open.spotify.com/embed/track/${getSpotifyEmbedId(song.spotify_url)}`}
@@ -102,6 +146,12 @@ const MyPlaylist = () => {
                 style={{ marginTop: "10px", borderRadius: "12px" }}
               ></iframe>
             )}
+
+            {/* Edit/Delete Buttons */}
+            <div className="edit-delete-buttons">
+              <button onClick={() => onEdit(song)}>Edit</button>
+              <button onClick={() => onDelete(song._id)}>Delete</button>
+            </div>
           </div>
         ))}
       </div>
@@ -110,6 +160,3 @@ const MyPlaylist = () => {
 };
 
 export default MyPlaylist;
-
-
-
