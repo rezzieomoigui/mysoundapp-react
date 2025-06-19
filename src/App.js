@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from "./components/Navbar";
@@ -13,71 +14,53 @@ const App = () => {
   const [editingPlaylist, setEditingPlaylist] = useState(null);
   const [message, setMessage] = useState("");
 
-  const API_URL = "https://mysoundapp-server.onrender.com/api/playlists"; // change this to your actual Render backend
+  const API_URL = "https://mysoundapp-server.onrender.com/api/playlists"; // ✅ update this with your backend link
 
-  // 🔄 Load playlists
   useEffect(() => {
     fetch(API_URL)
-    .then(res => res.json())
-    .then(data => {
-      if (Array.isArray(data)) {
-        setPlaylists(data);
-      } else {
-        console.error("API data is not an array:", data);
-        setPlaylists([]);
-      }
-    })
-    .catch(err => {
-      console.error("Error fetching playlists:", err);
-      setPlaylists([]);
-    });
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setPlaylists(data);
+        } else {
+          console.error("Invalid data format:", data);
+        }
+      })
+      .catch((err) => console.error("Error loading playlists:", err));
   }, []);
 
-  // ✏️ Edit handler
   const handleEdit = (playlist) => {
     setEditingPlaylist(playlist);
   };
 
-  // ❌ Delete handler
   const handleDelete = async (id) => {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: "DELETE",
-    });
-    if (response.ok) {
-      setPlaylists(prev => prev.filter(p => p._id !== id));
-      setMessage("Deleted successfully");
+    const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      setPlaylists(playlists.filter(p => p._id !== id));
+      setMessage("Deleted!");
     }
   };
 
-  // ✅ Save handler (for POST and PUT)
   const handleSave = async (playlistData) => {
-    if (playlistData._id) {
-      // Edit (PUT)
-      const response = await fetch(`${API_URL}/${playlistData._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(playlistData),
-      });
-      if (response.ok) {
-        const updated = await response.json();
-        setPlaylists(prev =>
-          prev.map(p => (p._id === updated._id ? updated : p))
-        );
-        setEditingPlaylist(null);
-        setMessage("Updated successfully");
+    const method = playlistData._id ? "PUT" : "POST";
+    const endpoint = playlistData._id ? `${API_URL}/${playlistData._id}` : API_URL;
+
+    const res = await fetch(endpoint, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(playlistData)
+    });
+
+    if (res.ok) {
+      const updated = await res.json();
+      if (playlistData._id) {
+        setPlaylists(playlists.map(p => p._id === updated._id ? updated : p));
+        setMessage("Updated!");
+      } else {
+        setPlaylists([...playlists, updated]);
+        setMessage("Added!");
       }
-    } else {
-      // Add new (POST)
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(playlistData),
-      });
-      if (response.ok) {
-        const created = await response.json();
-        setPlaylists(prev => [...prev, created]);
-        setMessage("Added successfully");
-      }
+      setEditingPlaylist(null);
     }
   };
 
@@ -88,8 +71,6 @@ const App = () => {
         <Route path="Discover" element={<Discover />} />
         <Route path="ArtistSpotlight" element={<ArtistSpotlight />} />
         <Route path="Genres" element={<Genres />} />
-        
-        {/* 🔥 Send props to MyPlaylist */}
         <Route
           path="MyPlaylist"
           element={
@@ -110,3 +91,4 @@ const App = () => {
 };
 
 export default App;
+
