@@ -18,9 +18,19 @@ const App = () => {
   // 🔄 Load playlists
   useEffect(() => {
     fetch(API_URL)
-      .then(res => res.json())
-      .then(data => setPlaylists(data))
-      .catch(err => console.error("Error fetching playlists:", err));
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data)) {
+        setPlaylists(data);
+      } else {
+        console.error("API data is not an array:", data);
+        setPlaylists([]);
+      }
+    })
+    .catch(err => {
+      console.error("Error fetching playlists:", err);
+      setPlaylists([]);
+    });
   }, []);
 
   // ✏️ Edit handler

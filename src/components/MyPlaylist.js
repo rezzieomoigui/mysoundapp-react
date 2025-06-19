@@ -126,34 +126,38 @@ const MyPlaylist = ({
 
       {/* Playlist Songs */}
       <div className="playlist-songs">
-        {playlists.map((song) => (
-          <div key={song._id} className="song-card">
-            <img src={song.img_name} alt={song.title} />
-            <h3>{song.title}</h3>
-            <p>{song.artist} — <i>{song.album}</i></p>
-            <span className="genre">{song.genre}</span>
+        {Array.isArray(playlists) ? (
+          playlists.map((song) => (
+            <div key={song._id} className="song-card">
+              <img src={song.img_name} alt={song.title} />
+              <h3>{song.title}</h3>
+              <p>{song.artist} — <i>{song.album}</i></p>
+              <span className="genre">{song.genre}</span>
 
-            {/* Spotify Player */}
-            {song.spotify_url && getSpotifyEmbedId(song.spotify_url) && (
-              <iframe
-                src={`https://open.spotify.com/embed/track/${getSpotifyEmbedId(song.spotify_url)}`}
-                width="100%"
-                height="80"
-                frameBorder="0"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                title={`Spotify player for ${song.title}`}
-                style={{ marginTop: "10px", borderRadius: "12px" }}
-              ></iframe>
-            )}
+              {/* Spotify Player */}
+              {song.spotify_url && getSpotifyEmbedId(song.spotify_url) && (
+                <iframe
+                  src={`https://open.spotify.com/embed/track/${getSpotifyEmbedId(song.spotify_url)}`}
+                  width="100%"
+                  height="80"
+                  frameBorder="0"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  title={`Spotify player for ${song.title}`}
+                  style={{ marginTop: "10px", borderRadius: "12px" }}
+                ></iframe>
+              )}
 
-            {/* Edit/Delete Buttons */}
-            <div className="edit-delete-buttons">
-              <button onClick={() => onEdit(song)}>Edit</button>
-              <button onClick={() => onDelete(song._id)}>Delete</button>
+              {/* Edit/Delete Buttons */}
+              <div className="edit-delete-buttons">
+                <button onClick={() => onEdit(song)}>Edit</button>
+                <button onClick={() => onDelete(song._id)}>Delete</button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No playlists to display</p>
+        )}
       </div>
     </div>
   );
