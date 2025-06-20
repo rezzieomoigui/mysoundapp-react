@@ -137,7 +137,7 @@ const MyPlaylist = ({ playlists, onEdit, onDelete, onSave, editingPlaylist, mess
               {/* Use backend URL to display uploaded images */}
               {song.img_name && (
                 <img
-                  src={`https://mysoundapp-server-2.onrender.com/uploads/${song.img_name}`}
+                  src={`https://mysoundapp-server.onrender.com/uploads/${song.img_name}`}
                   alt={song.title}
                   style={{ maxWidth: "200px" }}
                 />
