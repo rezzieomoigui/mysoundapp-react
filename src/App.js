@@ -14,7 +14,7 @@ const App = () => {
   const [editingPlaylist, setEditingPlaylist] = useState(null);
   const [message, setMessage] = useState("");
 
-  const API_URL = "https://mysoundapp-server.onrender.com/api/playlists"; // your backend URL
+  const API_URL = "https://mysoundapp-server-2.onrender.com"; // your backend URL
 
   useEffect(() => {
     fetch(API_URL)
