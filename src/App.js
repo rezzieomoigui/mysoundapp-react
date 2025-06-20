@@ -14,17 +14,15 @@ const App = () => {
   const [editingPlaylist, setEditingPlaylist] = useState(null);
   const [message, setMessage] = useState("");
 
-  const API_URL = "https://mysoundapp-server.onrender.com/api/playlists"; // ✅ update this with your backend link
+  const API_URL = "https://mysoundapp-server.onrender.com/api/playlists"; // your backend URL
 
   useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setPlaylists(data);
-        } else {
-          console.error("Invalid data format:", data);
-        }
+        console.log("Fetch GET /playlists →", data);
+        if (Array.isArray(data)) setPlaylists(data);
+        else setPlaylists([]);
       })
       .catch((err) => console.error("Error loading playlists:", err));
   }, []);
@@ -45,14 +43,27 @@ const App = () => {
     const method = playlistData._id ? "PUT" : "POST";
     const endpoint = playlistData._id ? `${API_URL}/${playlistData._id}` : API_URL;
 
-    const res = await fetch(endpoint, {
+    // Prepare form data for image upload and other fields
+    const formData = new FormData();
+    if (playlistData.img_name instanceof File) {
+      formData.append("img_name", playlistData.img_name);
+    }
+    // Append other fields
+    formData.append("title", playlistData.title);
+    formData.append("artist", playlistData.artist);
+    formData.append("album", playlistData.album || "");
+    formData.append("genre", playlistData.genre || "");
+    formData.append("spotify_url", playlistData.spotify_url || "");
+
+    const response = await fetch(endpoint, {
       method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(playlistData)
+      body: formData,
+      // Do NOT set Content-Type header; browser sets it automatically for FormData
     });
 
-    if (res.ok) {
-      const updated = await res.json();
+    if (response.ok) {
+      const updated = await response.json();
+      console.log(`${method} response →`, updated);
       if (playlistData._id) {
         setPlaylists(playlists.map(p => p._id === updated._id ? updated : p));
         setMessage("Updated!");
@@ -61,6 +72,9 @@ const App = () => {
         setMessage("Added!");
       }
       setEditingPlaylist(null);
+    } else {
+      const errorText = await response.text();
+      alert("Error: " + errorText);
     }
   };
 
@@ -91,4 +105,5 @@ const App = () => {
 };
 
 export default App;
+
 
